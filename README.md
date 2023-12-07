@@ -1,1 +1,1 @@
-# thineth.github.
+# thineth.github.io
