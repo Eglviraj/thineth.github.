@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Image Buttons in Bordered Frame</title>
+
+    <script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-database.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-firestore.js"></script>
+
+	<!-- Firebase configuration -->
+	<script>
+		var firebaseConfig = {
+			      apiKey: "AIzaSyCSZwK_nSchRNq-LB7z6BjC4sjkFGYmuVo",
+            authDomain: "db-kjm.firebaseapp.com",
+            databaseURL: "https://db-kjm-default-rtdb.firebaseio.com",
+            projectId: "db-kjm",
+            storageBucket: "db-kjm.appspot.com",
+            messagingSenderId: "628465751328",
+            appId: "1:628465751328:web:416703493dd3fede923345",
+            measurementId: "G-12ZRWZEBP1"
+		};
+		// Initialize Firebase
+		firebase.initializeApp(firebaseConfig);
+		// Get reference to Firebase database
+		var database = firebase.database();
+		var auth = firebase.auth();
+	</script>
+
+    <style>
+        /* Style the logo to display at the top center of the page */
+        img.logo {
+          display: block;
+          margin: 0 auto;
+          width: 400px; /* Set the width of the image to 200 pixels */
+          height: auto; /* Let the height adjust proportionally */
+          text-align: center;
+        }
+      </style>
+
+    <style>
+      /* Style the container element */
+      .container1 {
+        width: 600px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 2px solid rgb(124, 122, 122);
+        padding: 10px;
+        text-align: center;
+        border-radius: 10px; /* add rounded corners */
+      }
+
+      .container2 {
+        width: 600px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid rgb(226, 224, 224);
+        padding: 10px;
+        text-align: center;
+        border-radius: 5px; /* add rounded corners */
+      }
+  
+      /* Style the image buttons */
+      .image-button {
+        display: inline-block;
+        padding: 2%;
+        margin: 10px;
+        cursor: pointer;
+      }
+
+      .notification-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+      }
+      
+      /* Style for the notification dialog */
+      .notification-dialog {
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: 20px;
+        text-align: center;
+        width: 400px;
+      }
+    </style>
+
+<style>
+    .image-text {
+      display: inline-block;
+      text-align: center;
+    }
+
+    .text {
+      display: block;
+      margin-top: 5px;
+      font-size: 14px;
+      font-family: Arial, sans-serif;
+     
+    }
+  </style>
+
+<style>
+  .image-button {
+    display: inline-block;
+    position: relative;
+    top: 0;
+    transition: top 0.2s ease-in-out;
+  }
+
+  .image-button:hover {
+    top: -5px;
+  }
+</style>
+
+<style>
+
+  .container {
+    display: flex;
+    justify-content: center;    
+  margin-top: 50px;
+    height: 100vh;
+  }
+
+  .recyclerView {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+  }
+
+  .recyclerViewItem {
+    display: flex;
+    flex-direction: column;
+        justify-content: center; /* This centers the items horizontally */
+    align-items: center;
+    border: 1px solid gray;
+    padding: 10px;
+    margin: 10px;
+    width: 600px;
+    height: 60px;
+    overflow: auto;
+    text-align: center;
+    font-size: 16px;
+    font-family: sans-serif;
+  }
+
+  .recyclerViewItem button {
+    margin-top: 10px;
+    padding: 5px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: sans-serif;
+  }
+
+  nav {
+      background-color: #333;
+      overflow: hidden;
+  }
+
+  ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  }
+
+  li {
+  float: left;
+  }
+
+  li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  }
+
+  li a:hover {
+  background-color: #111;
+  }
+
+</style>
+
+
+
+  </head>
+  <body>
+    <img class="logo" src=https://i.imgur.com/5AFJXdb.jpg alt="My Website Logo">
+    <div class="container2">
+       
+      <!--img src="path/to/image1.jpg" alt="Image 1" class="image-button"-->
+      <span id="my-button" class="image-text image-button">
+        <img src="https://i.imgur.com/6iMaPLZ.png" alt="Image" width="80" height="80"><br>
+        <span class="text image-button" >Database</span>
+      </span>
+      <span class="image-text image-button">
+        <img src="https://i.imgur.com/lm2thP8.png" alt="Image" width="80" height="80"><br>
+        <span class="text image-button" >List</span>
+      </span>
+      <span onclick="showNotification()" class="image-text image-button" >
+        <img src="https://i.imgur.com/xmWBlPz.png" alt="Image" width="80" height="80"><br>
+        <span class="text image-button" >Appoinments</span>
+        
+      </span>
+
+    </div>
+<br>
+
+    <script>
+        const button = document.getElementById('my-button');
+    
+        button.addEventListener('click', function() {
+          const now = new Date();
+          const dayOfWeek = now.getDay();
+          const hourOfDay = now.getHours();
+
+          // Get the current time and date
+          let now1 = new Date();
+
+          // Get the time in 24-hour format
+          let hours = now1.getHours();
+          let minutes = now1.getMinutes();
+          let seconds = now1.getSeconds();
+          let timeString = hours.toString().padStart(2, '0') + ':' +
+                 minutes.toString().padStart(2, '0') ;
+                // seconds.toString().padStart(2, '0');
+
+          // Get the date in ISO format
+          let year = now1.getFullYear();
+          let month = (now1.getMonth() + 1).toString().padStart(2, '0');
+          let day = now1.getDate().toString().padStart(2, '0');
+          let dateString = year + '-' + month + '-' + day;
+
+            // Print the current time and date
+            console.log('Current time: ' + timeString);
+            console.log('Current date: ' + dateString);
+
+            // Create a new Date object for the desired date
+          let myDate = new Date('2023-04-14');
+
+            // Get the name of the day of the week
+          let dayName = myDate.toLocaleDateString('en-US', { weekday: 'long' });
+
+          // Print the day name
+          console.log(dayName);
+
+
+    
+          if (dayOfWeek === 6 || (dayOfWeek === 5 && hourOfDay >= 20)) {
+            // Do something if it's Saturday or after Friday at 8:00 pm https://hoes.tube/search/sexmex/
+            console.log('It\'s Saturday or after Friday at 8:00 pm!');
+
+            database.ref("num").remove()
+            database.ref("Books").remove() 
+            database.ref("LastUpdate").set("Last upadate : \n" + dateString +" " + dayName + " at " + timeString + " PM") 
+            database.ref("num/01/res").set("08:20 AM                                                          (01)")
+            database.ref("num/02/res").set("08:30 AM                                                          (02)")
+            database.ref("num/03/res").set("08:40 AM                                                          (03)")
+            database.ref("num/04/res").set("08:45 AM                                                          (04)")
+            database.ref("num/05/res").set("08:50 AM                                                          (05)")
+            database.ref("num/06/res").set("08:55 AM                                                          (06)")
+            database.ref("num/07/res").set("09:00 AM                                                          (07)")
+            database.ref("num/08/res").set("09:05 AM                                                          (08)")
+            database.ref("num/09/res").set("09:10 AM                                                          (09)")
+            database.ref("num/10/res").set("09:15 AM                                                          (10)")
+            database.ref("num/11/res").set("09:20 AM                                                          (11)")
+            database.ref("num/12/res").set("09:25 AM                                                          (12)")
+            database.ref("num/13/res").set("09:30 AM                                                          (13)")
+            database.ref("num/14/res").set("09:35 AM                                                          (14)")
+            database.ref("num/15/res").set("09:40 AM                                                          (15)")
+            database.ref("num/16/res").set("09:45 AM                                                          (16)")
+            database.ref("num/17/res").set("09:50 AM                                                          (17)")
+            database.ref("num/18/res").set("09:55 AM                                                          (18)")
+            database.ref("num/19/res").set("10:00 AM                                                          (19)")
+            database.ref("num/20/res").set("10:05 AM                                                          (20)")
+            database.ref("num/21/res").set("10:10 AM                                                          (21)")
+            database.ref("num/22/res").set("10:15 AM                                                          (22)")
+            database.ref("num/23/res").set("10:20 AM                                                          (23)")
+            database.ref("num/24/res").set("10:25 AM                                                          (24)")
+            database.ref("num/25/res").set("10:30 AM                                                          (25)")
+            database.ref("num/26/res").set("10:35 AM                                                          (26)")
+            database.ref("num/27/res").set("10:40 AM                                                          (27)")
+            database.ref("num/28/res").set("10:45 AM                                                          (28)")
+            database.ref("num/29/res").set("10:50 AM                                                          (29)")
+            database.ref("num/30/res").set("10:55 AM                                                          (30)")
+            database.ref("num/31/res").set("11:00 AM                                                          (31)")
+            database.ref("num/32/res").set("11:05 AM                                                          (32)")
+            database.ref("num/33/res").set("11:10 AM                                                          (33)")
+            database.ref("num/34/res").set("11:15 AM                                                          (34)")
+            database.ref("num/35/res").set("11:20 AM                                                          (35)")
+            database.ref("num/36/res").set("11:25 AM                                                          (36)")
+            database.ref("num/37/res").set("11:30 AM                                                          (37)")
+            database.ref("num/38/res").set("11:35 AM                                                          (38)")
+            database.ref("num/39/res").set("11:40 AM                                                          (39)")
+            database.ref("num/40/res").set("11:45 AM                                                          (40)")
+            database.ref("num/41/res").set("11:50 AM                                                          (41)")
+            database.ref("num/42/res").set("11:55 AM                                                          (42)")
+            database.ref("num/43/res").set("12:00 PM                                                          (43)")
+            database.ref("num/44/res").set("12:05 PM                                                          (44)")
+            database.ref("num/45/res").set("12:10 PM                                                          (45)")
+            database.ref("num/46/res").set("12:15 PM                                                          (46)")
+            database.ref("num/47/res").set("12:20 PM                                                          (47)")
+            database.ref("num/48/res").set("12:25 PM                                                          (48)")
+            database.ref("num/49/res").set("12:30 PM                                                          (49)")
+            database.ref("num/50/res").set("12:35 PM                                                          (50)")
+            database.ref("num/51/res").set("12:40 PM                                                          (51)")
+            database.ref("num/52/res").set("12:45 PM                                                          (52)")
+            database.ref("num/53/res").set("12:50 PM                                                          (53)")
+            database.ref("num/54/res").set("12:55 PM                                                          (54)")
+
+            database.ref("num/55/res").set("3:30 PM                                                          (55)")
+            database.ref("num/56/res").set("3:35 PM                                                          (56)")
+            database.ref("num/57/res").set("3:40 PM                                                          (57)")
+            database.ref("num/58/res").set("3:45 PM                                                          (58)")
+            database.ref("num/59/res").set("3:50 PM                                                          (59)")
+            database.ref("num/60/res").set("3:55 PM                                                          (60)")
+            database.ref("num/61/res").set("4:00 PM                                                          (61)")
+            database.ref("num/62/res").set("4:05 PM                                                          (62)")
+            database.ref("num/63/res").set("4:10 PM                                                          (63)")
+            database.ref("num/64/res").set("4:15 PM                                                          (64)")
+            database.ref("num/65/res").set("4:20 PM                                                          (65)")
+            database.ref("num/66/res").set("4:25 PM                                                          (66)")
+            database.ref("num/67/res").set("4:30 PM                                                          (67)")
+            database.ref("num/68/res").set("4:35 PM                                                          (68)")
+            database.ref("num/69/res").set("4:40 PM                                                          (69)")
+            database.ref("num/70/res").set("4:45 PM                                                          (70)")
+            database.ref("num/71/res").set("4:50 PM                                                          (71)")
+            database.ref("num/72/res").set("4:55 PM                                                          (72)")
+            database.ref("num/73/res").set("5:00 PM                                                          (73)")
+            database.ref("num/74/res").set("5:05 PM                                                          (74)")
+            database.ref("num/75/res").set("5:10 PM                                                          (75)")
+            database.ref("num/76/res").set("5:15 PM                                                          (76)")
+            database.ref("num/77/res").set("5:20 PM                                                          (77)")
+            database.ref("num/78/res").set("5:25 PM                                                          (78)")
+            database.ref("num/79/res").set("5:30 PM                                                          (79)")
+            database.ref("num/80/res").set("5:35 PM                                                          (80)")
+            database.ref("num/81/res").set("5:40 PM                                                          (81)")
+            database.ref("num/82/res").set("5:45 PM                                                          (82)")
+            database.ref("num/83/res").set("5:50 PM                                                          (83)")
+            database.ref("num/84/res").set("5:55 PM                                                          (84)")
+            showNotification();
+
+
+
+          } else {
+            // Do something else if it's any other day or time
+            console.log('It\'s not Saturday or after Friday at 8:00 pm.');
+            
+            database.ref("num").remove()
+            database.ref("Books").remove() 
+            database.ref("LastUpdate").set("Last upadate : \n" + dateString +" " + dayName + " at " + timeString + " PM") 
+
+            database.ref("num/01/res").set("04:15 PM                                                          (01)")
+            database.ref("num/02/res").set("04:20 PM                                                          (02)")
+            database.ref("num/03/res").set("04:25 PM                                                          (03)")
+            database.ref("num/04/res").set("04:30 PM                                                          (04)")
+            database.ref("num/05/res").set("04:35 PM                                                          (05)")
+            database.ref("num/06/res").set("04:40 PM                                                          (06)")
+            database.ref("num/07/res").set("04:45 PM                                                          (07)")
+            database.ref("num/08/res").set("04:50 PM                                                          (08)")
+            database.ref("num/09/res").set("04:55 PM                                                          (09)")
+            database.ref("num/10/res").set("05:00 PM                                                          (10)")
+            database.ref("num/11/res").set("05:05 PM                                                          (11)")
+            database.ref("num/12/res").set("05:10 PM                                                          (12)")
+            database.ref("num/13/res").set("05:15 PM                                                          (13)")
+            database.ref("num/14/res").set("05:20 PM                                                          (14)")
+            database.ref("num/15/res").set("05:25 PM                                                          (15)")
+            database.ref("num/16/res").set("05:30 PM                                                          (16)")
+            database.ref("num/17/res").set("05:35 PM                                                          (17)")
+            database.ref("num/18/res").set("05:40 PM                                                          (18)")
+            database.ref("num/19/res").set("05:45 PM                                                          (19)")
+            database.ref("num/20/res").set("05:50 PM                                                          (20)")
+            database.ref("num/21/res").set("05:55 PM                                                          (21)")
+            database.ref("num/22/res").set("06:00 PM                                                          (22)")
+            database.ref("num/23/res").set("06:05 PM                                                          (23)")
+            database.ref("num/24/res").set("06:10 PM                                                          (24)")
+            database.ref("num/25/res").set("06:15 PM                                                          (25)")
+            database.ref("num/26/res").set("06:20 PM                                                          (26)")
+            database.ref("num/27/res").set("06:25 PM                                                          (27)")
+            database.ref("num/28/res").set("06:30 PM                                                          (28)")
+            database.ref("num/29/res").set("06:35 PM                                                          (29)")
+            database.ref("num/30/res").set("06:40 PM                                                          (30)")
+            database.ref("num/31/res").set("06:45 PM                                                          (31)")
+            database.ref("num/32/res").set("06:50 PM                                                          (32)")
+            database.ref("num/33/res").set("06:55 PM                                                          (33)")
+            database.ref("num/34/res").set("07:00 PM                                                          (34)")
+            database.ref("num/35/res").set("07:05 PM                                                          (35)")
+            database.ref("num/36/res").set("07:10 PM                                                          (36)")
+            database.ref("num/37/res").set("07:15 PM                                                          (37)")
+            database.ref("num/38/res").set("07:20 PM                                                          (38)")
+            database.ref("num/39/res").set("07:25 PM                                                          (39)")
+            database.ref("num/40/res").set("07:30 PM                                                          (40)")
+            database.ref("num/41/res").set("07:35 PM                                                          (41)")
+            database.ref("num/42/res").set("07:40 PM                                                          (42)")
+            database.ref("num/43/res").set("07:45 PM                                                          (43)")
+            database.ref("num/44/res").set("07:50 PM                                                          (44)")
+            database.ref("num/45/res").set("07:55 PM                                                          (45)")
+            showNotification();
+
+          }
+        });
+      </script>
+
+<div id="notificationContainer" class="notification-container" style="display:none;">
+  <div class="notification-dialog">
+    <h2>Database Update Complete</h2>
+    <p>Number of records added: <span id="recordCount"></span></p>
+    <button onclick="hideNotification()">Close</button>
+  </div>
+</div>
+
+    <script>
+      var database = firebase.database();
+      function showNotification() {
+        var notificationContainer = document.getElementById("notificationContainer");
+        notificationContainer.style.display = "block";
+        database.ref("num").once("value", function(snapshot) {
+          var recordCount = snapshot.numChildren();
+          document.getElementById("recordCount").innerHTML = recordCount;
+        });
+      }
+      
+      function hideNotification() {
+        var notificationContainer = document.getElementById("notificationContainer");
+        notificationContainer.style.display = "none";
+      }
+    </script>
+
+<!--img src="path/to/image1.jpg" alt="Image 1" class="image-button"-->
+
+<div class="container1">
+	<!-- Create a div to hold the RecyclerView -->
+	<div id="recyclerView">
+
+	<!-- Include the Firebase JavaScript SDK -->
+	<script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.2.7/firebase-database.js"></script>
+
+	<!-- Initialize Firebase -->
+	<script>
+		var firebaseConfig = {
+			// Add your Firebase project configuration here
+      apiKey: "AIzaSyCSZwK_nSchRNq-LB7z6BjC4sjkFGYmuVo",
+            authDomain: "db-kjm.firebaseapp.com",
+            databaseURL: "https://db-kjm-default-rtdb.firebaseio.com",
+            projectId: "db-kjm",
+            storageBucket: "db-kjm.appspot.com",
+            messagingSenderId: "628465751328",
+            appId: "1:628465751328:web:416703493dd3fede923345",
+            measurementId: "G-12ZRWZEBP1"
+		};
+		firebase.initializeApp(firebaseConfig);
+	</script>
+ 
+
+ <script>
+	// Get a reference to the Firebase Realtime Database
+	var database = firebase.database();
+	
+	// Get a reference to the RecyclerView div
+	var recyclerView = document.getElementById("recyclerView");
+	
+	// Define an array of colors
+	var colors = ["yellow", "green", "red", "white"];
+	
+	// Add an event listener to listen for changes in the Firebase Realtime Database
+	database.ref("Books").orderByChild("category").on("value", function(snapshot) {
+		// Clear the RecyclerView
+		recyclerView.innerHTML = "";
+	
+		// Loop through the data and add it to the RecyclerView
+		snapshot.forEach(function(childSnapshot) {
+			var key = childSnapshot.key;
+			var data = childSnapshot.val();
+			var itemView = document.createElement("div");
+			itemView.className = "recyclerViewItem";
+			itemView.innerHTML =  data.category + ' | ' + data.author ;
+			
+			// Add delete button
+			var deleteButton = document.createElement("button");
+			deleteButton.innerHTML = "Delete";
+			deleteButton.style.float = "right";
+			deleteButton.addEventListener("click", function() {
+				database.ref("Books/" + key).remove();
+			});
+			itemView.appendChild(deleteButton);
+	
+			var index = 0;
+			itemView.addEventListener("click", function() {
+				itemView.style.backgroundColor = colors[index];
+				index = (index + 1) % colors.length;
+			});
+			recyclerView.appendChild(itemView);
+		});
+	});
+	</script>
+
+  </body>
+</html>
